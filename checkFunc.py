@@ -21,9 +21,13 @@ def check(url="www.google.com", timeout=3):
 # Função para pegar o IP do computador
 def myIp(url="https://www.myip.com/", timeout=3):
     # Utilizando BeautifulSoup para pegar o IP
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, "html.parser")
-    elements = soup.find_all("div", class_="texto_1")
+    # Algumas mudanças para evitar erros caso inicie o app sem internet
+    try:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, "html.parser")
+        elements = soup.find_all("div", class_="texto_1")
     # O primeiro elemento é o IPv6 e o segundo é o IPv4
-    result = elements[1].text
-    return result
+        result = elements[1].text
+        return result
+    except Exception as e:
+        return "No connection..."
